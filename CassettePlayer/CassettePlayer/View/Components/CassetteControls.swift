@@ -22,7 +22,9 @@ struct CassetteControls: View {
             Button("Skip", systemImage: "forward.fill", action: onNext)
             Button("Rewind", systemImage: "backward.fill", action: onPrevious)
             Button("Stop", systemImage: "stop.fill", action: onStop)
+                .foregroundStyle(Color.red)
         }
+        .buttonStyle(.cassette)
     }
 }
 
