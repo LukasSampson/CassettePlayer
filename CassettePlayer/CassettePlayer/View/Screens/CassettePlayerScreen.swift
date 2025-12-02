@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CassettePlayerScreen: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         songTitle
         controls
         songList
@@ -20,7 +19,13 @@ struct CassettePlayerScreen: View {
     }
     
     private var controls: some View {
-        Text("Controls")
+        CassetteControls(
+            onPlay: {},
+            onPause: {},
+            onNext: {},
+            onPrevious: {},
+            onStop: {}
+        )
     }
     
     private var songList: some View {
