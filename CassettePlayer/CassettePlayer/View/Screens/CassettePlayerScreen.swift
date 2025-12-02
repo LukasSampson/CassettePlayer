@@ -15,7 +15,7 @@ struct CassettePlayerScreen: View {
     }
     
     private var songTitle: some View {
-        Text("Song Title")
+        CassetteNowPlaying(song: "")
     }
     
     private var controls: some View {
@@ -29,7 +29,18 @@ struct CassettePlayerScreen: View {
     }
     
     private var songList: some View {
-        Text("Song List")
+        CassetteSongList(
+            songs: [
+                "One More Time",
+                "Flashing Lights",
+                "A Car, A Torch, A Death",
+                "Kid Again",
+                "Kyle (i found you)"
+            ],
+            currentlyPlaying: "Kid Again",
+            onTapSong: { _ in
+            }
+        )
     }
 }
 
