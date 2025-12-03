@@ -18,16 +18,30 @@ struct Player {
     private var currentSongIndex = 0
     private var audioPlayer: AVAudioPlayer?
     
+    init(songs: [Song]) {
+        self.songs = songs
+    }
+    
     // Play
     mutating func play() {
-        guard let currentSong else { return }
-        
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: currentSong.location)
-            audioPlayer?.play()
-        } catch {
-            print("Audio player could not be created for file: \(currentSong.location)")
+        if audioPlayer == nil, let currentSong {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: currentSong.location)
+            } catch {
+                print("Audio player could not be created for file: \(currentSong.location)")
+            }
         }
+        
+        audioPlayer?.play()
+    }
+    
+    mutating func playSong(with name: String) {
+        guard let index = songs.firstIndex(where: { $0.name == name })
+        else { return }
+        
+        currentSongIndex = index
+        stop()
+        play()
     }
     
     // Pause

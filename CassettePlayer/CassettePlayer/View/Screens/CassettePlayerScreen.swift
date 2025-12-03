@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct CassettePlayerScreen: View {
+    
+    @State private var viewModel = CassetteVM()
+    
     var body: some View {
         VStack{
             songTitle
@@ -21,34 +24,27 @@ struct CassettePlayerScreen: View {
     }
     
     private var songTitle: some View {
-        CassetteNowPlaying(song: "")
+        CassetteNowPlaying(song: viewModel.currentSong)
             .clipShape(RoundedRectangle(cornerRadius: 5))
     }
     
     private var controls: some View {
         CassetteControls(
-            onPlay: {},
-            onPause: {},
-            onNext: {},
-            onPrevious: {},
-            onStop: {}
+            onPlay: viewModel.play,
+            onPause: viewModel.pause,
+            onNext: viewModel.next,
+            onPrevious: viewModel.previous,
+            onStop: viewModel.stop
         )
     }
     
     private var songList: some View {
         CassetteSongList(
-            songs: [
-                "One More Time",
-                "Flashing Lights",
-                "A Car, A Torch, A Death",
-                "Kid Again",
-                "Kyle (i found you)"
-            ],
-            currentlyPlaying: "Kid Again",
-            onTapSong: { _ in
-            }
+            songs: viewModel.songs,
+            currentlyPlaying: viewModel.currentSong,
+            onTapSong: viewModel.playSong
         )
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+        .clipShape(RoundedRectangle(cornerRadius: 5))
     }
 }
 
