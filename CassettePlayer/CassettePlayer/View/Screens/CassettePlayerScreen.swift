@@ -9,13 +9,20 @@ import SwiftUI
 
 struct CassettePlayerScreen: View {
     var body: some View {
-        songTitle
-        controls
-        songList
+        VStack{
+            songTitle
+            HStack(alignment: .top) {
+                controls
+                songList
+            }
+        }
+        .padding()
+        .background(Color.plastic)
     }
     
     private var songTitle: some View {
         CassetteNowPlaying(song: "")
+            .clipShape(RoundedRectangle(cornerRadius: 5))
     }
     
     private var controls: some View {
@@ -41,6 +48,7 @@ struct CassettePlayerScreen: View {
             onTapSong: { _ in
             }
         )
+            .clipShape(RoundedRectangle(cornerRadius: 5))
     }
 }
 
