@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CassetteControls: View {
     
+    var orientation: Orientation = .vertical
+    
     let onPlay: () -> Void
     let onPause: () -> Void
     let onNext: () -> Void
@@ -16,15 +18,30 @@ struct CassetteControls: View {
     let onStop: () -> Void
     
     var body: some View {
-        VStack {
+        // AnyLayout
+        orientation.layout {
             Button("Play", systemImage: "play.fill", action: onPlay)
             Button("Pause", systemImage: "pause.fill", action: onPause)
             Button("Skip", systemImage: "forward.fill", action: onNext)
             Button("Rewind", systemImage: "backward.fill", action: onPrevious)
             Button("Stop", systemImage: "stop.fill", action: onStop)
-                .foregroundStyle(Color.red)
+              .foregroundStyle(Color.red)
         }
         .buttonStyle(.cassette)
+    }
+}
+
+extension CassetteControls {
+    enum Orientation {
+        case vertical
+        case horizontal
+        
+        var layout: AnyLayout {
+            switch self {
+                case .vertical: AnyLayout(VStackLayout())
+                case .horizontal: AnyLayout(HStackLayout())
+            }
+        }
     }
 }
 

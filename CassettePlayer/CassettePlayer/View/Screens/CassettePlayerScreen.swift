@@ -9,15 +9,34 @@ import SwiftUI
 
 struct CassettePlayerScreen: View {
     
+    @Environment(\.layoutOrientation) private var orientation
+    
     @State private var viewModel = CassetteVM()
     
     var body: some View {
+        switch orientation {
+            case .portrait: portrait
+            case .landscape: landscape
+        }
+    }
+    
+    private var portrait: some View {
         VStack{
             songTitle
             HStack(alignment: .top) {
-                controls
+                controls(.vertical)
                 songList
             }
+        }
+        .padding()
+        .background(Color.plastic)
+    }
+    
+    private var landscape: some View {
+        VStack(alignment: .leading){
+            songTitle
+            controls(.horizontal)
+            songList
         }
         .padding()
         .background(Color.plastic)
@@ -28,8 +47,9 @@ struct CassettePlayerScreen: View {
             .clipShape(RoundedRectangle(cornerRadius: 5))
     }
     
-    private var controls: some View {
+    private func controls(_ orientation: CassetteControls.Orientation) -> some View {
         CassetteControls(
+            orientation: .vertical,
             onPlay: viewModel.play,
             onPause: viewModel.pause,
             onNext: viewModel.next,
@@ -50,4 +70,5 @@ struct CassettePlayerScreen: View {
 
 #Preview {
     CassettePlayerScreen()
+        .layoutOriented()
 }

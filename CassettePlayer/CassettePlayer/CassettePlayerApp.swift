@@ -11,7 +11,8 @@ import SwiftUI
 struct CassettePlayerApp: App {
     var body: some Scene {
         WindowGroup {
-            Text("Setup app")
+            CassettePlayerScreen()
+                .layoutOriented()
         }
     }
 }
