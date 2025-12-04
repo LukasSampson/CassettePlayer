@@ -6,8 +6,10 @@
 //
 
 import AVFoundation
+import Observation
 
-struct Player {
+@Observable
+class Player: NSObject {
     let songs: [Song]
     
     var currentSong: Song? {
@@ -20,13 +22,19 @@ struct Player {
     
     init(songs: [Song]) {
         self.songs = songs
+        
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+        try? AVAudioSession.sharedInstance().setActive(true)
+        
+        super.init()
     }
     
     // Play
-    mutating func play() {
+    func play() {
         if audioPlayer == nil, let currentSong {
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: currentSong.location)
+                audioPlayer?.delegate = self
             } catch {
                 print("Audio player could not be created for file: \(currentSong.location)")
             }
@@ -35,7 +43,7 @@ struct Player {
         audioPlayer?.play()
     }
     
-    mutating func playSong(with name: String) {
+    func playSong(with name: String) {
         guard let index = songs.firstIndex(where: { $0.name == name })
         else { return }
         
@@ -50,22 +58,30 @@ struct Player {
     }
     
     // Stop
-    mutating func stop() {
+    func stop() {
         audioPlayer?.stop()
         audioPlayer = nil
     }
     
     // Next
-    mutating func next() {
+    func next() {
         currentSongIndex = currentSongIndex + 1 >= songs.count ? 0 : currentSongIndex + 1
         stop()
         play()
     }
     
     // Previous
-    mutating func previous() {
+    func previous() {
         currentSongIndex = currentSongIndex - 1 < 0 ? songs.count - 1 : currentSongIndex - 1
         stop()
         play()
+    }
+}
+
+extension Player: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            next()
+        }
     }
 }

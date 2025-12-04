@@ -14,10 +14,21 @@ struct CassettePlayerScreen: View {
     @State private var viewModel = CassetteVM()
     
     var body: some View {
-        switch orientation {
-            case .portrait: portrait
-            case .landscape: landscape
+        Group {
+            switch orientation {
+                case .portrait: portrait
+                case .landscape: landscape
+            }
         }
+        .padding()
+        .background(Color.plastic)
+        .overlay {
+            Color.white
+                .colorEffect(ShaderLibrary.randomNoise())
+                .opacity(0.15)
+                .ignoresSafeArea()
+        }
+//        .colorEffect(ShaderLibrary.randomNoise())
     }
     
     private var portrait: some View {
@@ -28,8 +39,6 @@ struct CassettePlayerScreen: View {
                 songList
             }
         }
-        .padding()
-        .background(Color.plastic)
     }
     
     private var landscape: some View {
@@ -38,8 +47,6 @@ struct CassettePlayerScreen: View {
             controls(.horizontal)
             songList
         }
-        .padding()
-        .background(Color.plastic)
     }
     
     private var songTitle: some View {
